@@ -16,6 +16,7 @@ const TransactionForm = ({ onSubmit }: { onSubmit: (transaction: Transaction) =>
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
+  const [transactionDate, setTransactionDate] = useState(new Date().toISOString().slice(0, 16));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,13 +36,14 @@ const TransactionForm = ({ onSubmit }: { onSubmit: (transaction: Transaction) =>
       amount: parseFloat(amount),
       category,
       description,
-      date: new Date(),
+      date: new Date(transactionDate),
     };
 
     onSubmit(transaction);
     setAmount("");
     setCategory("");
     setDescription("");
+    setTransactionDate(new Date().toISOString().slice(0, 16));
 
     toast({
       title: "Success",
@@ -86,6 +88,15 @@ const TransactionForm = ({ onSubmit }: { onSubmit: (transaction: Transaction) =>
             ))}
           </SelectContent>
         </Select>
+      </div>
+
+      <div className="space-y-2">
+        <Input
+          type="datetime-local"
+          value={transactionDate}
+          onChange={(e) => setTransactionDate(e.target.value)}
+          className="transition-all duration-200 hover:ring-2 hover:ring-primary/20"
+        />
       </div>
 
       <div className="space-y-2">
