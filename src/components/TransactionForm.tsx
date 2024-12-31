@@ -55,10 +55,10 @@ const TransactionForm = ({ onSubmit }: { onSubmit: (transaction: Transaction) =>
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Select value={type} onValueChange={(value: TransactionType) => setType(value)}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-background">
             <SelectValue placeholder="Select type" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-popover border shadow-md">
             <SelectItem value="income">Income</SelectItem>
             <SelectItem value="expense">Expense</SelectItem>
           </SelectContent>
@@ -77,10 +77,10 @@ const TransactionForm = ({ onSubmit }: { onSubmit: (transaction: Transaction) =>
 
       <div className="space-y-2">
         <Select value={category} onValueChange={setCategory}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-background">
             <SelectValue placeholder="Select category" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-popover border shadow-md">
             {categories[type].map((cat) => (
               <SelectItem key={cat} value={cat}>
                 {cat}
