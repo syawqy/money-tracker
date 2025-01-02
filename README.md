@@ -1,69 +1,123 @@
-# Welcome to your Lovable project
+Here's a comprehensive README.md for your money tracker application:
 
-## Project info
+# Personal Money Tracker
 
-**URL**: https://lovable.dev/projects/fbcbf986-e911-4bd7-ba5d-75078a36bdb0
+A modern, responsive web application for tracking personal finances with features for managing income and expenses, categorizing transactions, and visualizing spending patterns.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- **Transaction Management**
+  - Add income and expense transactions
+  - Categorize transactions
+  - Add descriptions and dates
+  - View transaction history
 
-**Use Lovable**
+- **Category Management**
+  - Create custom categories for both income and expenses
+  - Edit existing categories
+  - Delete unused categories
+  - Default categories provided
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/fbcbf986-e911-4bd7-ba5d-75078a36bdb0) and start prompting.
+- **Data Visualization**
+  - Pie charts for income and expense distribution
+  - Filter transactions by time period (daily/weekly/monthly/yearly)
+  - Custom date range selection
+  - Real-time updates
 
-Changes made via Lovable will be committed automatically to this repo.
+- **User Interface**
+  - Clean and modern design
+  - Responsive layout
+  - Smooth animations
+  - Toast notifications
+  - Dark mode support
 
-**Use your preferred IDE**
+## Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Frontend Framework**: React with TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Charts**: Recharts
+- **Build Tool**: Vite
+- **Date Handling**: date-fns
+- **Form Management**: React Hook Form
+- **State Management**: React Query
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Project Structure
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+src/
+├── components/       # UI components
+├── hooks/           # Custom React hooks
+├── lib/            # Utility functions
+├── pages/          # Page components
+└── types/          # TypeScript type definitions
 ```
 
-**Edit a file directly in GitHub**
+## Getting Started
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Prerequisites
 
-**Use GitHub Codespaces**
+- Node.js (v14 or later)
+- npm or Bun package manager
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Installation
 
-## What technologies are used for this project?
+1. Clone the repository:
+```bash
+git clone <repository-url>
+```
 
-This project is built with .
+2. Install dependencies:
+```bash
+cd money-tracker
+npm install
+# or
+bun install
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+3. Start the development server:
+```bash
+npm run dev
+# or
+bun dev
+```
 
-## How can I deploy this project?
+4. Open [http://localhost:8080](http://localhost:8080) in your browser.
 
-Simply open [Lovable](https://lovable.dev/projects/fbcbf986-e911-4bd7-ba5d-75078a36bdb0) and click on Share -> Publish.
+## Development
 
-## I want to use a custom domain - is that possible?
+### Available Scripts
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+### Code Style
+
+This project uses:
+- ESLint for code linting
+- Prettier for code formatting
+- TypeScript for type checking
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [shadcn/ui](https://ui.shadcn.com/) for the beautiful UI components
+- [Recharts](https://recharts.org/) for the chart components
+- [Tailwind CSS](https://tailwindcss.com/) for the styling system
+
+---
+
+For more information or support, please open an issue in the GitHub repository.
