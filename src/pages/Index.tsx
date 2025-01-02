@@ -3,15 +3,29 @@ import { Card } from "@/components/ui/card";
 import TransactionForm from "@/components/TransactionForm";
 import TransactionList from "@/components/TransactionList";
 import CategoryChart from "@/components/CategoryChart";
+import CategoryManager from "@/components/CategoryManager";
 import TimeSelector from "@/components/TimeSelector";
-import { TimePeriod, Transaction } from "@/types/transaction";
+import { TimePeriod, Transaction, TransactionType } from "@/types/transaction";
+
+const defaultCategories = {
+  income: ["Salary", "Freelance", "Investments", "Other"],
+  expense: ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Other"],
+};
 
 const Index = () => {
   const [timePeriod, setTimePeriod] = useState<TimePeriod>("daily");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [categories, setCategories] = useState(defaultCategories);
 
   const addTransaction = (transaction: Transaction) => {
     setTransactions((prev) => [transaction, ...prev]);
+  };
+
+  const addCategory = (type: TransactionType, category: string) => {
+    setCategories((prev) => ({
+      ...prev,
+      [type]: [...prev[type], category],
+    }));
   };
 
   return (
@@ -22,14 +36,19 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <Card className="p-6 backdrop-blur-sm bg-white/50 animate-slideIn">
             <h2 className="text-2xl font-semibold mb-4">Add Transaction</h2>
-            <TransactionForm onSubmit={addTransaction} />
+            <TransactionForm onSubmit={addTransaction} categories={categories} />
           </Card>
           
           <Card className="p-6 backdrop-blur-sm bg-white/50 animate-slideIn">
-            <h2 className="text-2xl font-semibold mb-4">Overview</h2>
-            <CategoryChart transactions={transactions} timePeriod={timePeriod} />
+            <h2 className="text-2xl font-semibold mb-4">Manage Categories</h2>
+            <CategoryManager categories={categories} onAddCategory={addCategory} />
           </Card>
         </div>
+
+        <Card className="p-6 backdrop-blur-sm bg-white/50 animate-slideIn">
+          <h2 className="text-2xl font-semibold mb-4">Overview</h2>
+          <CategoryChart transactions={transactions} timePeriod={timePeriod} />
+        </Card>
 
         <Card className="p-6 backdrop-blur-sm bg-white/50 animate-slideIn">
           <div className="flex justify-between items-center mb-6">

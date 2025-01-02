@@ -5,12 +5,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Transaction, TransactionType } from "@/types/transaction";
 import { useToast } from "@/components/ui/use-toast";
 
-const categories = {
-  income: ["Salary", "Freelance", "Investments", "Other"],
-  expense: ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Other"],
-};
+interface TransactionFormProps {
+  onSubmit: (transaction: Transaction) => void;
+  categories: {
+    income: string[];
+    expense: string[];
+  };
+}
 
-const TransactionForm = ({ onSubmit }: { onSubmit: (transaction: Transaction) => void }) => {
+const TransactionForm = ({ onSubmit, categories }: TransactionFormProps) => {
   const { toast } = useToast();
   const [type, setType] = useState<TransactionType>("expense");
   const [amount, setAmount] = useState("");
