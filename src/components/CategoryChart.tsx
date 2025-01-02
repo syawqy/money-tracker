@@ -1,13 +1,35 @@
 import { Transaction, TimePeriod } from "@/types/transaction";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { DateRange } from "react-day-picker";
+import { isWithinInterval, startOfDay, endOfDay } from "date-fns";
+
+interface CategoryChartProps {
+  transactions: Transaction[];
+  timePeriod: TimePeriod;
+  dateRange?: DateRange;
+}
 
 const COLORS = {
   income: ["#4A6741", "#82A878", "#B8D4B2"],
   expense: ["#E57373", "#EF9A9A", "#FFCDD2"],
 };
 
-const CategoryChart = ({ transactions, timePeriod }: { transactions: Transaction[]; timePeriod: TimePeriod }) => {
-  const categoryTotals = transactions.reduce((acc, transaction) => {
+const CategoryChart = ({ transactions, timePeriod, dateRange }: CategoryChartProps) => {
+  const getFilteredTransactions = () => {
+    if (dateRange?.from) {
+      return transactions.filter((transaction) => {
+        const transactionDate = new Date(transaction.date);
+        const start = startOfDay(dateRange.from);
+        const end = dateRange.to ? endOfDay(dateRange.to) : endOfDay(dateRange.from);
+        return isWithinInterval(transactionDate, { start, end });
+      });
+    }
+    return transactions;
+  };
+
+  const filteredTransactions = getFilteredTransactions();
+
+  const categoryTotals = filteredTransactions.reduce((acc, transaction) => {
     const { category, amount, type } = transaction;
     if (!acc[type]) {
       acc[type] = {};

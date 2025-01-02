@@ -5,8 +5,10 @@ import TransactionList from "@/components/TransactionList";
 import CategoryChart from "@/components/CategoryChart";
 import CategoryManager from "@/components/CategoryManager";
 import TimeSelector from "@/components/TimeSelector";
+import DateRangeSelector from "@/components/DateRangeSelector";
 import { TimePeriod, Transaction, TransactionType } from "@/types/transaction";
 import { useToast } from "@/components/ui/use-toast";
+import { DateRange } from "react-day-picker";
 
 const defaultCategories = {
   income: ["Salary", "Freelance", "Investments", "Other"],
@@ -16,6 +18,7 @@ const defaultCategories = {
 const Index = () => {
   const { toast } = useToast();
   const [timePeriod, setTimePeriod] = useState<TimePeriod>("daily");
+  const [dateRange, setDateRange] = useState<DateRange>();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState(defaultCategories);
 
@@ -31,13 +34,11 @@ const Index = () => {
   };
 
   const updateCategory = (type: TransactionType, oldCategory: string, newCategory: string) => {
-    // Update the categories list
     setCategories((prev) => ({
       ...prev,
       [type]: prev[type].map((cat) => (cat === oldCategory ? newCategory : cat)),
     }));
 
-    // Update all transactions using this category
     setTransactions((prev) =>
       prev.map((transaction) => {
         if (transaction.type === type && transaction.category === oldCategory) {
@@ -49,7 +50,6 @@ const Index = () => {
   };
 
   const deleteCategory = (type: TransactionType, categoryToDelete: string) => {
-    // Check if there are any transactions using this category
     const hasTransactions = transactions.some(
       (transaction) => transaction.type === type && transaction.category === categoryToDelete
     );
@@ -93,15 +93,18 @@ const Index = () => {
 
         <Card className="p-6 backdrop-blur-sm bg-white/50 animate-slideIn">
           <h2 className="text-2xl font-semibold mb-4">Overview</h2>
-          <CategoryChart transactions={transactions} timePeriod={timePeriod} />
+          <CategoryChart transactions={transactions} timePeriod={timePeriod} dateRange={dateRange} />
         </Card>
 
         <Card className="p-6 backdrop-blur-sm bg-white/50 animate-slideIn">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <h2 className="text-2xl font-semibold">Transactions</h2>
-            <TimeSelector value={timePeriod} onChange={setTimePeriod} />
+            <div className="flex flex-col md:flex-row gap-4">
+              <TimeSelector value={timePeriod} onChange={setTimePeriod} />
+              <DateRangeSelector dateRange={dateRange} onDateRangeChange={setDateRange} />
+            </div>
           </div>
-          <TransactionList transactions={transactions} timePeriod={timePeriod} />
+          <TransactionList transactions={transactions} timePeriod={timePeriod} dateRange={dateRange} />
         </Card>
       </div>
     </div>
