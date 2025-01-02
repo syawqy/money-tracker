@@ -1,5 +1,3 @@
-Here's a comprehensive README.md for your money tracker application:
-
 # Personal Money Tracker
 
 A modern, responsive web application for tracking personal finances with features for managing income and expenses, categorizing transactions, and visualizing spending patterns.
