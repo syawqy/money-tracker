@@ -15,52 +15,52 @@ const TransactionList = ({ transactions, timePeriod, dateRange }: TransactionLis
 
     // Apply date range filter if it exists
     if (dateRange?.from) {
+      const start = startOfDay(dateRange.from);
+      const end = dateRange.to ? endOfDay(dateRange.to) : endOfDay(dateRange.from);
+
       filteredTransactions = filteredTransactions.filter((transaction) => {
         const transactionDate = new Date(transaction.date);
-        const start = startOfDay(dateRange.from);
-        const end = dateRange.to ? endOfDay(dateRange.to) : endOfDay(dateRange.from);
         return isWithinInterval(transactionDate, { start, end });
       });
-    } else {
-      // Apply time period filter if no date range is selected
-      const now = new Date();
-      let interval: { start: Date; end: Date };
-
-      switch (timePeriod) {
-        case "daily":
-          interval = {
-            start: startOfDay(now),
-            end: endOfDay(now)
-          };
-          break;
-        case "weekly":
-          interval = {
-            start: startOfWeek(now),
-            end: endOfWeek(now)
-          };
-          break;
-        case "monthly":
-          interval = {
-            start: startOfMonth(now),
-            end: endOfMonth(now)
-          };
-          break;
-        case "yearly":
-          interval = {
-            start: startOfYear(now),
-            end: endOfYear(now)
-          };
-          break;
-        default:
-          return filteredTransactions;
-      }
-
-      filteredTransactions = filteredTransactions.filter(transaction =>
-        isWithinInterval(new Date(transaction.date), interval)
-      );
+      return filteredTransactions;
     }
 
-    return filteredTransactions;
+    // Apply time period filter if no date range is selected
+    const now = new Date();
+    let interval: { start: Date; end: Date };
+
+    switch (timePeriod) {
+      case "daily":
+        interval = {
+          start: startOfDay(now),
+          end: endOfDay(now)
+        };
+        break;
+      case "weekly":
+        interval = {
+          start: startOfWeek(now),
+          end: endOfWeek(now)
+        };
+        break;
+      case "monthly":
+        interval = {
+          start: startOfMonth(now),
+          end: endOfMonth(now)
+        };
+        break;
+      case "yearly":
+        interval = {
+          start: startOfYear(now),
+          end: endOfYear(now)
+        };
+        break;
+      default:
+        return filteredTransactions;
+    }
+
+    return filteredTransactions.filter(transaction =>
+      isWithinInterval(new Date(transaction.date), interval)
+    );
   };
 
   const filteredTransactions = getFilteredTransactions();
@@ -93,7 +93,7 @@ const TransactionList = ({ transactions, timePeriod, dateRange }: TransactionLis
                   transaction.type === "income" ? "text-income" : "text-expense"
                 }`}
               >
-                {transaction.type === "income" ? "+" : "-"}${transaction.amount.toFixed(2)}
+                {transaction.type === "income" ? "+" : "-"}${Math.abs(transaction.amount).toFixed(2)}
               </p>
             </div>
           ))

@@ -17,10 +17,11 @@ const COLORS = {
 const CategoryChart = ({ transactions, timePeriod, dateRange }: CategoryChartProps) => {
   const getFilteredTransactions = () => {
     if (dateRange?.from) {
+      const start = startOfDay(dateRange.from);
+      const end = dateRange.to ? endOfDay(dateRange.to) : endOfDay(dateRange.from);
+      
       return transactions.filter((transaction) => {
         const transactionDate = new Date(transaction.date);
-        const start = startOfDay(dateRange.from);
-        const end = dateRange.to ? endOfDay(dateRange.to) : endOfDay(dateRange.from);
         return isWithinInterval(transactionDate, { start, end });
       });
     }
@@ -37,7 +38,7 @@ const CategoryChart = ({ transactions, timePeriod, dateRange }: CategoryChartPro
     if (!acc[type][category]) {
       acc[type][category] = 0;
     }
-    acc[type][category] += amount;
+    acc[type][category] += Math.abs(amount);
     return acc;
   }, {} as Record<string, Record<string, number>>);
 
@@ -45,7 +46,7 @@ const CategoryChart = ({ transactions, timePeriod, dateRange }: CategoryChartPro
     if (!categoryTotals[type]) return [];
     return Object.entries(categoryTotals[type]).map(([name, value]) => ({
       name,
-      value: Math.abs(value),
+      value,
     }));
   };
 
