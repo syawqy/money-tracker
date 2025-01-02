@@ -6,6 +6,7 @@ import CategoryChart from "@/components/CategoryChart";
 import CategoryManager from "@/components/CategoryManager";
 import TimeSelector from "@/components/TimeSelector";
 import { TimePeriod, Transaction, TransactionType } from "@/types/transaction";
+import { useToast } from "@/components/ui/use-toast";
 
 const defaultCategories = {
   income: ["Salary", "Freelance", "Investments", "Other"],
@@ -13,6 +14,7 @@ const defaultCategories = {
 };
 
 const Index = () => {
+  const { toast } = useToast();
   const [timePeriod, setTimePeriod] = useState<TimePeriod>("daily");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState(defaultCategories);
@@ -25,6 +27,45 @@ const Index = () => {
     setCategories((prev) => ({
       ...prev,
       [type]: [...prev[type], category],
+    }));
+  };
+
+  const updateCategory = (type: TransactionType, oldCategory: string, newCategory: string) => {
+    // Update the categories list
+    setCategories((prev) => ({
+      ...prev,
+      [type]: prev[type].map((cat) => (cat === oldCategory ? newCategory : cat)),
+    }));
+
+    // Update all transactions using this category
+    setTransactions((prev) =>
+      prev.map((transaction) => {
+        if (transaction.type === type && transaction.category === oldCategory) {
+          return { ...transaction, category: newCategory };
+        }
+        return transaction;
+      })
+    );
+  };
+
+  const deleteCategory = (type: TransactionType, categoryToDelete: string) => {
+    // Check if there are any transactions using this category
+    const hasTransactions = transactions.some(
+      (transaction) => transaction.type === type && transaction.category === categoryToDelete
+    );
+
+    if (hasTransactions) {
+      toast({
+        title: "Cannot Delete Category",
+        description: "There are transactions using this category. Please update or delete those transactions first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setCategories((prev) => ({
+      ...prev,
+      [type]: prev[type].filter((cat) => cat !== categoryToDelete),
     }));
   };
 
@@ -41,7 +82,12 @@ const Index = () => {
           
           <Card className="p-6 backdrop-blur-sm bg-white/50 animate-slideIn">
             <h2 className="text-2xl font-semibold mb-4">Manage Categories</h2>
-            <CategoryManager categories={categories} onAddCategory={addCategory} />
+            <CategoryManager 
+              categories={categories} 
+              onAddCategory={addCategory}
+              onUpdateCategory={updateCategory}
+              onDeleteCategory={deleteCategory}
+            />
           </Card>
         </div>
 
